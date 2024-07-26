@@ -1,6 +1,7 @@
 import argparse
 import os
 from PIL import Image
+import PIL
 from rembg import remove
 from pathlib import Path  
 
@@ -10,17 +11,17 @@ def create_parser():
     return parser
 
 def remove_bg(image_path):
-    try:
-            if(os.exist.path(image_path)):
-                p = Path(image_path)
-                input_img = Image.open(image_path)
-                output = remove(input_img)
-                output_path = str(p.parent)+"/devrembg"+str(p.suffix)
-                output.save(output_path)
-            else:
-                print("File Path does not found")
-    except:
-        print("Check the Argument")
+    if(os.path.exists(image_path)):
+        try:
+            p = Path(image_path)
+            input_img = Image.open(image_path)
+            output = remove(input_img)
+            output_path = str(p.parent)+"/devrembg.png"
+            output.save(output_path)
+        except (FileNotFoundError, Image.UnidentifiedImageError) as e:
+            print(f"Error processing image: {e}")
+    else:
+        print("File Path does not found")
 
 def main():
     parser = create_parser()
